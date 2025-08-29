@@ -76,7 +76,7 @@ app.use(requestLogger);
 app.use('/health', healthRouter);
 app.use('/api/v1', apiRouter);
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.json({
     name: 'ggrepo API',
     version: '1.0.0',

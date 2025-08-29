@@ -76,7 +76,7 @@ export const errorHandler = (
   err: ApiError | ZodError | any,
   req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   const { statusCode, message, code, details } = getErrorDetails(err);
   const isProduction = process.env.NODE_ENV === 'production';
