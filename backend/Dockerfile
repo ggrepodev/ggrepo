@@ -8,15 +8,18 @@ WORKDIR /app
 COPY package*.json ./
 COPY backend/package*.json ./backend/
 
-# Install dependencies
-RUN npm ci --only=production
+# Install all dependencies (including devDependencies for build)
+RUN npm ci
 
 # Copy backend source code
 COPY backend/ ./backend/
 
 # Build the application
 WORKDIR /app/backend
-RUN npm run build
+RUN npm ci && npm run build
+
+# Clean up devDependencies after build
+RUN npm prune --production
 
 # Expose port
 EXPOSE 3001
