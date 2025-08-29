@@ -14,7 +14,7 @@ RUN npm ci
 COPY backend/ ./
 
 # Build the application
-RUN npm ci & npm run build
+RUN npm ci && npm run build
 
 # Clean up devDependencies after build
 RUN npm prune --production
