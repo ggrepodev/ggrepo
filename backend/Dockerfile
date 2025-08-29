@@ -14,7 +14,7 @@ RUN npm ci
 COPY backend/ ./
 
 # Build the application
-RUN npm run build
+RUN npm ci & npm run build
 
 # Clean up devDependencies after build
 RUN npm prune --production
@@ -24,7 +24,7 @@ EXPOSE 3001
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3001/health || exit 1
+    CMD curl -f http://localhost:3001/health || exit 1
 
 # Start the application
 CMD ["node", "dist/index.js"]
