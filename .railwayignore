@@ -1,0 +1,10 @@
+# Ignore frontend files - only deploy backend
+frontend/
+node_modules/
+.git/
+.github/
+README.md
+docker-compose.yml
+
+# Keep backend files
+!backend/
