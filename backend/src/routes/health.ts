@@ -4,12 +4,12 @@ import { logger } from '../utils/logger';
 
 const router = Router();
 
-router.get('/', async (req, res) => {
+router.get('/', async (_req, res) => {
   try {
     const startTime = Date.now();
     const db = getDb();
     
-    await db.execute('SELECT 1');
+    await db.execute('SELECT 1' as any);
     const dbResponseTime = Date.now() - startTime;
     
     const healthData = {
@@ -54,10 +54,10 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/ready', async (req, res) => {
+router.get('/ready', async (_req, res) => {
   try {
     const db = getDb();
-    await db.execute('SELECT 1');
+    await db.execute('SELECT 1' as any);
     res.json({ status: 'ready', timestamp: new Date().toISOString() });
   } catch (error) {
     logger.error('Readiness check failed:', error);
@@ -69,7 +69,7 @@ router.get('/ready', async (req, res) => {
   }
 });
 
-router.get('/live', (req, res) => {
+router.get('/live', (_req, res) => {
   res.json({ 
     status: 'alive', 
     timestamp: new Date().toISOString(),

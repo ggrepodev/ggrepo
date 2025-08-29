@@ -1,0 +1,16 @@
+node_modules
+dist
+logs
+*.log
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+.vscode
+.git
+README.md
