@@ -1,0 +1,246 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  --color-success: var(--success-bg);
+  --color-success-border: var(--success-border);
+  --color-success-foreground: var(--success-fg);
+  
+  --color-warning: var(--warning-bg);
+  --color-warning-border: var(--warning-border);
+  --color-warning-foreground: var(--warning-fg);
+  
+  --color-info: var(--info-bg);
+  --color-info-border: var(--info-border);
+  --color-info-foreground: var(--info-fg);
+  
+  --color-error: var(--error-bg);
+  --color-error-border: var(--error-border);
+  --color-error-foreground: var(--error-fg);
+  
+  --color-green-50: var(--green-50);
+  --color-green-100: var(--green-100);
+  --color-green-200: var(--green-200);
+  --color-green-300: var(--green-300);
+  --color-green-400: var(--green-400);
+  --color-green-500: var(--green-500);
+  --color-green-600: var(--green-600);
+  --color-green-700: var(--green-700);
+  --color-green-800: var(--green-800);
+  --color-green-900: var(--green-900);
+  
+  --color-grey-50: var(--grey-50);
+  --color-grey-100: var(--grey-100);
+  --color-grey-200: var(--grey-200);
+  --color-grey-300: var(--grey-300);
+  --color-grey-400: var(--grey-400);
+  --color-grey-500: var(--grey-500);
+  --color-grey-600: var(--grey-600);
+  --color-grey-700: var(--grey-700);
+  --color-grey-800: var(--grey-800);
+  --color-grey-900: var(--grey-900);
+  
+  --radius: 8px;
+}
+
+@layer base {
+  :root {
+    /* ===== Core greys / black / white ===== */
+    --grey-50:  #F9FAFB;
+    --grey-100: #F3F4F6;
+    --grey-200: #E5E7EB;
+    --grey-300: #D1D5DB;
+    --grey-400: #9CA3AF;
+    --grey-500: #6B7280;
+    --grey-600: #4B5563;
+    --grey-700: #374151;
+    --grey-800: #1F2937;
+    --grey-900: #111827;
+
+    --black: #0F1117; /* dark bg */
+    --white: #FFFFFF;
+
+    /* ===== Greens ===== */
+    --green-50:  #ECFDF5;
+    --green-100: #D1FAE5;
+    --green-200: #A7F3D0;
+    --green-300: #6EE7B7;
+    --green-400: #34D399;
+    --green-500: #10B981; /* accent */
+    --green-600: #059669;
+    --green-700: #047857;
+    --green-800: #065F46;
+    --green-900: #064E3B;
+
+    /* ===== Yellow (warn) ===== */
+    --yellow-50:  #FFFBEB;
+    --yellow-100: #FEF3C7;
+    --yellow-200: #FDE68A;
+    --yellow-300: #FCD34D;
+    --yellow-400: #FBBF24;
+    --yellow-500: #F59E0B;
+    --yellow-600: #D97706;
+    --yellow-700: #B45309;
+
+    /* ===== Pink (hint/highlight) ===== */
+    --pink-50:  #FDF2F8;
+    --pink-100: #FCE7F3;
+    --pink-200: #FBCFE8;
+    --pink-300: #F9A8D4;
+    --pink-400: #F472B6;
+    --pink-500: #EC4899;
+    --pink-600: #DB2777;
+    --pink-700: #BE185D;
+
+    /* ===== Orange (soft alerts) ===== */
+    --orange-50:  #FFF7ED;
+    --orange-100: #FFEDD5;
+    --orange-200: #FED7AA;
+    --orange-300: #FDBA74;
+    --orange-400: #FB923C;
+    --orange-500: #F97316;
+    --orange-600: #EA580C;
+    --orange-700: #C2410C;
+
+    /* ===== Red (errors) ===== */
+    --red-50:  #FEF2F2;
+    --red-100: #FEE2E2;
+    --red-200: #FECACA;
+    --red-300: #FCA5A5;
+    --red-400: #F87171;
+    --red-500: #EF4444;
+    --red-600: #DC2626;
+    --red-700: #B91C1C;
+
+    /* ===== shadcn semantic tokens (light) ===== */
+    --background: var(--grey-50);
+    --foreground: var(--grey-900);
+
+    --card: var(--white);
+    --card-foreground: var(--grey-900);
+
+    --popover: var(--white);
+    --popover-foreground: var(--grey-900);
+
+    --primary: var(--green-500);
+    --primary-foreground: var(--white);
+
+    --secondary: var(--grey-100);
+    --secondary-foreground: var(--grey-900);
+
+    --muted: var(--grey-100);
+    --muted-foreground: var(--grey-600);
+
+    --accent: var(--green-100);
+    --accent-foreground: var(--green-800);
+
+    --destructive: var(--red-600);
+    --destructive-foreground: var(--white);
+
+    --border: var(--grey-200);
+    --input: var(--grey-200);
+    --ring: var(--green-400);
+
+    --radius: 8px;
+
+    /* ===== Extra semantic helpers for toasts/alerts ===== */
+    --success-bg: var(--green-50);
+    --success-border: var(--green-200);
+    --success-fg: var(--green-800);
+
+    --warning-bg: var(--yellow-50);
+    --warning-border: var(--yellow-200);
+    --warning-fg: var(--yellow-700);
+
+    --info-bg: var(--pink-50);
+    --info-border: var(--pink-200);
+    --info-fg: var(--pink-700);
+
+    --soft-alert-bg: var(--orange-50);
+    --soft-alert-border: var(--orange-200);
+    --soft-alert-fg: var(--orange-700);
+
+    --error-bg: var(--red-50);
+    --error-border: var(--red-200);
+    --error-fg: var(--red-700);
+  }
+
+  .dark {
+    --background: var(--black);
+    --foreground: var(--grey-100);
+
+    --card: var(--grey-900);
+    --card-foreground: var(--grey-100);
+
+    --popover: var(--grey-900);
+    --popover-foreground: var(--grey-100);
+
+    --primary: var(--green-400);
+    --primary-foreground: var(--grey-900);
+
+    --secondary: var(--grey-800);
+    --secondary-foreground: var(--grey-100);
+
+    --muted: var(--grey-800);
+    --muted-foreground: var(--grey-400);
+
+    --accent: var(--green-700);
+    --accent-foreground: var(--green-100);
+
+    --destructive: var(--red-500);
+    --destructive-foreground: var(--grey-100);
+
+    --border: var(--grey-800);
+    --input: var(--grey-800);
+    --ring: var(--green-500);
+
+    /* Toast/Alert helpers (dark) */
+    --success-bg: var(--green-900);
+    --success-border: var(--green-700);
+    --success-fg: var(--green-100);
+
+    --warning-bg: var(--yellow-700);
+    --warning-border: var(--yellow-600);
+    --warning-fg: var(--yellow-50);
+
+    --info-bg: var(--pink-700);
+    --info-border: var(--pink-600);
+    --info-fg: var(--pink-50);
+
+    --soft-alert-bg: var(--orange-700);
+    --soft-alert-border: var(--orange-600);
+    --soft-alert-fg: var(--orange-50);
+
+    --error-bg: var(--red-700);
+    --error-border: var(--red-600);
+    --error-fg: var(--red-50);
+  }
+}
