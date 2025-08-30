@@ -22,8 +22,8 @@ RUN npm run build
 # Remove devDependencies to reduce image size
 RUN npm prune --production
 
-# Railway uses dynamic PORT
-EXPOSE $PORT
+# Railway assigns PORT dynamically  
+EXPOSE 3000
 
-# Start the application
-CMD ["node", "dist/index.js"]
+# Add debug logging and start app
+CMD ["sh", "-c", "echo 'Container starting...' && echo 'PORT env var:' $PORT && echo 'NODE_ENV:' $NODE_ENV && echo 'Starting app...' && node dist/index.js"]
