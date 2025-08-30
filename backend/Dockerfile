@@ -7,15 +7,23 @@ RUN apk add --no-cache curl
 # Set working directory
 WORKDIR /app
 
-# Copy only backend files
+# Copy package files first (for better Docker layer caching)
 COPY backend/package*.json ./
+
+# Install dependencies using npm install (not ci since we don't have package-lock in backend)
+RUN npm install
+
+# Copy backend source code
 COPY backend/ ./
 
-# Install dependencies and build
-RUN npm ci && npm run build && npm prune --production
+# Build the application
+RUN npm run build
 
-# Railway uses dynamic PORT, not 3001
+# Remove devDependencies to reduce image size
+RUN npm prune --production
+
+# Railway uses dynamic PORT
 EXPOSE $PORT
 
-# Start the application - Railway provides PORT env var
+# Start the application
 CMD ["node", "dist/index.js"]
