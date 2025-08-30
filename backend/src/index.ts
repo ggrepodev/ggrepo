@@ -98,8 +98,8 @@ app.use('*', (req, res) => {
 
 app.use(errorHandler);
 
-const server = app.listen(PORT, () => {
-  logger.info(`🚀 Server running on port ${PORT}`);
+const server = app.listen(PORT, '0.0.0.0', () => {
+  logger.info(`🚀 Server running on 0.0.0.0:${PORT}`);
   logger.info(`📊 Health check: http://localhost:${PORT}/health`);
   logger.info(`🔌 API endpoint: http://localhost:${PORT}/api/v1`);
   logger.info(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);

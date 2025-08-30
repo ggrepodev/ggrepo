@@ -1,34 +1,21 @@
 # Use Node.js 18 LTS
 FROM node:18-alpine
 
+# Install curl for health checks
+RUN apk add --no-cache curl
+
 # Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
-COPY backend/package*.json ./backend/
+# Copy only backend files
+COPY backend/package*.json ./
+COPY backend/ ./
 
-# Install all dependencies (including devDependencies for build)
-RUN npm ci
+# Install dependencies and build
+RUN npm ci && npm run build && npm prune --production
 
-# Copy backend source code
-COPY backend/ ./backend/
+# Railway uses dynamic PORT, not 3001
+EXPOSE $PORT
 
-# Build the application
-WORKDIR /app/backend
-RUN npm ci && npm run build
-
-# Clean up devDependencies after build
-RUN npm prune --production
-
-# Expose port
-EXPOSE 3001
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:3001/health || exit 1
-
-# List directory structure for debugging
-RUN ls -la && ls -la dist/
-# Start the application
+# Start the application - Railway provides PORT env var
 CMD ["node", "dist/index.js"]
