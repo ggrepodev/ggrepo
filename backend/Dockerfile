@@ -31,7 +31,7 @@ RUN npm prune --omit=dev
 # Copy built JS and any runtime assets
 COPY --from=builder /app/dist ./dist
 
-# Railway sets PORT dynamically
+# Railway sets PORT dynamically  
 EXPOSE 3001
 
 CMD sh -c "echo 'Container starting...' \
@@ -42,5 +42,5 @@ CMD sh -c "echo 'Container starting...' \
     && echo 'Files in dist:' && ls -la dist/ \
     && echo 'Testing basic node...' \
     && node -e \"console.log('Node works'); console.log('Express test:'); const express = require('express'); console.log('Express loaded');\" \
-    && echo 'Starting real app...' \
+    && echo 'Starting app...' \
     && node dist/index.js"

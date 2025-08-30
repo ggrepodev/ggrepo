@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { getDb } from '../db';
 import { logger } from '../utils/logger';
+import { sql } from 'drizzle-orm';
 
 const router = Router();
 
@@ -9,7 +10,7 @@ router.get('/', async (_req, res) => {
     const startTime = Date.now();
     const db = getDb();
     
-    await db.execute('SELECT 1' as any);
+    await db.execute(sql`SELECT 1`);
     const dbResponseTime = Date.now() - startTime;
     
     const healthData = {
@@ -57,7 +58,7 @@ router.get('/', async (_req, res) => {
 router.get('/ready', async (_req, res) => {
   try {
     const db = getDb();
-    await db.execute('SELECT 1' as any);
+    await db.execute(sql`SELECT 1`);
     res.json({ status: 'ready', timestamp: new Date().toISOString() });
   } catch (error) {
     logger.error('Readiness check failed:', error);
