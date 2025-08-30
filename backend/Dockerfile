@@ -34,9 +34,13 @@ COPY --from=builder /app/dist ./dist
 # Railway sets PORT dynamically
 EXPOSE 3001
 
-# Helpful debug + start server
 CMD sh -c "echo 'Container starting...' \
     && echo 'PORT:' \"$PORT\" \
     && echo 'NODE_ENV:' \"$NODE_ENV\" \
+    && echo 'DATABASE_URL set:' \$([ -n \"$DATABASE_URL\" ] && echo 'YES' || echo 'NO') \
+    && echo 'JWT_SECRET set:' \$([ -n \"$JWT_SECRET\" ] && echo 'YES' || echo 'NO') \
     && echo 'Files in dist:' && ls -la dist/ \
+    && echo 'Testing basic node...' \
+    && node -e \"console.log('Node works'); console.log('Express test:'); const express = require('express'); console.log('Express loaded');\" \
+    && echo 'Starting real app...' \
     && node dist/index.js"
