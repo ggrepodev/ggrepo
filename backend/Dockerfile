@@ -30,7 +30,6 @@ RUN npm prune --omit=dev
 
 # Copy built JS and any runtime assets
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/drizzle ./drizzle
 
 # Railway sets PORT dynamically
 EXPOSE 3001
