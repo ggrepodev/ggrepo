@@ -1,29 +1,43 @@
-# Use Node.js 18 LTS
-FROM node:18-alpine
-
-# Install curl for health checks
-RUN apk add --no-cache curl
-
-# Set working directory
+FROM node:18-alpine AS deps
 WORKDIR /app
 
-# Copy package files first (for better Docker layer caching)
-COPY backend/package*.json ./
+RUN apk add --no-cache curl
 
-# Install dependencies using npm install (not ci since we don't have package-lock in backend)
+# 1) Install deps (no lockfile, so use install)
+COPY backend/package*.json ./
 RUN npm install
 
-# Copy backend source code
+# 2) Build TypeScript
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY backend/ ./
-
-# Build the application
+# Ensure tsconfig.json exists and "outDir": "dist"
 RUN npm run build
 
-# Remove devDependencies to reduce image size
-RUN npm prune --production
+# 3) Runtime image (small, prod-only)
+FROM node:18-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
 
-# Railway assigns PORT dynamically  
-EXPOSE 3000
+# Keep curl for Railway health checks / debugging (optional)
+RUN apk add --no-cache curl
 
-# Add debug logging and start test server
-CMD ["sh", "-c", "echo 'Container starting...' && echo 'PORT env var:' $PORT && echo 'NODE_ENV:' $NODE_ENV && echo 'Files in src:' && ls -la src/ && echo 'Starting test server...' && node src/test-server.js"]
+# Copy package files and node_modules, then drop dev deps
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+RUN npm prune --omit=dev
+
+# Copy built JS and any runtime assets
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/drizzle ./drizzle
+
+# Railway sets PORT dynamically
+EXPOSE 3001
+
+# Helpful debug + start server
+CMD sh -c "echo 'Container starting...' \
+    && echo 'PORT:' \"$PORT\" \
+    && echo 'NODE_ENV:' \"$NODE_ENV\" \
+    && echo 'Files in dist:' && ls -la dist/ \
+    && node dist/index.js"
