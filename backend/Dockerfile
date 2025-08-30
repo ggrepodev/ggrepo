@@ -25,5 +25,5 @@ RUN npm prune --production
 # Railway assigns PORT dynamically  
 EXPOSE 3000
 
-# Add debug logging and start app
-CMD ["sh", "-c", "echo 'Container starting...' && echo 'PORT env var:' $PORT && echo 'NODE_ENV:' $NODE_ENV && echo 'Starting app...' && node dist/index.js"]
+# Add debug logging and start test server
+CMD ["sh", "-c", "echo 'Container starting...' && echo 'PORT env var:' $PORT && echo 'NODE_ENV:' $NODE_ENV && echo 'Files in src:' && ls -la src/ && echo 'Starting test server...' && node src/test-server.js"]
