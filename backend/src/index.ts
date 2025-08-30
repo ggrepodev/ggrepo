@@ -13,21 +13,32 @@ import { initializeDatabase, closeDatabase } from './db';
 import { healthRouter } from './routes/health';
 import { apiRouter } from './routes/api';
 
+console.log('🔄 Step 1: Loading dotenv...');
 dotenv.config();
-validateEnv();
 
-// database connection
+console.log('🔄 Step 2: Validating environment...');
 try {
-  initializeDatabase();
-  logger.info('📊 Database connected successfully');
+  validateEnv();
+  console.log('✅ Environment validation passed');
 } catch (error) {
-  logger.error('❌ Failed to connect to database:', error);
+  console.error('❌ Environment validation failed:', error);
   process.exit(1);
 }
 
+console.log('🔄 Step 3: Initializing database...');
+try {
+  initializeDatabase();
+  console.log('✅ Database connected successfully');
+} catch (error) {
+  console.error('❌ Database connection failed:', error);
+  process.exit(1);
+}
+
+console.log('🔄 Step 4: Creating Express app...');
 const app = express();
 const PORT = parseInt(process.env.PORT || '3001', 10);
 const isProduction = process.env.NODE_ENV === 'production';
+console.log(`✅ Express app created, PORT: ${PORT}, Production: ${isProduction}`);
 
 process.on('uncaughtException', (error) => {
   logger.error('Uncaught Exception:', error);
@@ -98,11 +109,17 @@ app.use('*', (req, res) => {
 
 app.use(errorHandler);
 
+console.log('🔄 Step 5: Starting server...');
 const server = app.listen(PORT, '0.0.0.0', () => {
-  logger.info(`🚀 Server running on 0.0.0.0:${PORT}`);
-  logger.info(`📊 Health check: http://localhost:${PORT}/health`);
-  logger.info(`🔌 API endpoint: http://localhost:${PORT}/api/v1`);
-  logger.info(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🚀 SERVER STARTED SUCCESSFULLY on 0.0.0.0:${PORT}`);
+  console.log(`📊 Health check: http://0.0.0.0:${PORT}/health`);
+  console.log(`🔌 API endpoint: http://0.0.0.0:${PORT}/api/v1`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+});
+
+server.on('error', (error) => {
+  console.error('❌ Server failed to start:', error);
+  process.exit(1);
 });
 
 const gracefulShutdown = (signal: string) => {
